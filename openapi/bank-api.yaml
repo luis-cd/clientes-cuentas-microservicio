@@ -1,0 +1,176 @@
+openapi: 3.0.3
+info:
+  title: Bank Account Service API
+  description: API for managing bank clients and their bank accounts (hexagonal architecture)
+  version: 0.1.0
+servers:
+  - url: http://localhost:8080
+paths:
+  /clientes:
+    get:
+      summary: Get all clients with their accounts
+      responses:
+        '200':
+          description: List of clients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cliente'
+  /clientes/{dni}:
+    get:
+      summary: Get a client by DNI
+      parameters:
+        - name: dni
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Client found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cliente'
+        '404':
+          description: Client not found
+  /clientes/mayores-de-edad:
+    get:
+      summary: Get all clients over 18
+      responses:
+        '200':
+          description: List of adult clients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cliente'
+  /clientes/con-cuenta-superior-a/{cantidad}:
+    get:
+      summary: Get clients whose total accounts exceed a given amount
+      parameters:
+        - name: cantidad
+          in: path
+          required: true
+          schema:
+            type: number
+            format: double
+      responses:
+        '200':
+          description: List of clients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cliente'
+  /cuentas:
+    post:
+      summary: Create a new bank account (and client if necessary)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CuentaCreateRequest'
+      responses:
+        '201':
+          description: Account created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CuentaBancaria'
+  /cuentas/{idCuenta}:
+    put:
+      summary: Update total of a bank account
+      parameters:
+        - name: idCuenta
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CuentaUpdateRequest'
+      responses:
+        '200':
+          description: Account updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CuentaBancaria'
+        '404':
+          description: Account not found
+components:
+  schemas:
+    Cliente:
+      type: object
+      properties:
+        dni:
+          type: string
+          example: "11111111A"
+        nombre:
+          type: string
+          example: "Juan"
+        apellido1:
+          type: string
+          example: "Pérez"
+        apellido2:
+          type: string
+          example: "López"
+        fechaNacimiento:
+          type: string
+          format: date
+          example: "1959-09-12"
+        cuentas:
+          type: array
+          items:
+            $ref: '#/components/schemas/CuentaBancaria'
+    CuentaBancaria:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        dniCliente:
+          type: string
+          example: "11111111A"
+        tipoCuenta:
+          type: string
+          example: "PREMIUM"
+        total:
+          type: number
+          format: double
+          example: 150000
+    CuentaCreateRequest:
+      type: object
+      required:
+        - dniCliente
+        - tipoCuenta
+        - total
+      properties:
+        dniCliente:
+          type: string
+          example: "11111111A"
+        tipoCuenta:
+          type: string
+          example: "NORMAL"
+        total:
+          type: number
+          format: double
+          example: 50000
+    CuentaUpdateRequest:
+      type: object
+      required:
+        - total
+      properties:
+        total:
+          type: number
+          format: double
+          example: 180000
