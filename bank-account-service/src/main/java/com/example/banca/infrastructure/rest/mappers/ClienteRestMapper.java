@@ -39,9 +39,9 @@ public final class ClienteRestMapper {
 
         return new CuentaDTO(
                 cuenta.getId(),
-                cuenta.getTipoCuenta(),
+                cuenta.getTipoCuenta().name(),
                 cuenta.getTotal(),
-                cuenta.getDniCliente().getValor() // <-- campo necesario para los tests
+                cuenta.getDniCliente().getValor()
         );
     }
 }

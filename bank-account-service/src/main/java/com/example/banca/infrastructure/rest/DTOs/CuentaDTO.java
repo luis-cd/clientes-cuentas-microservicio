@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CuentaDTO {
     private Long id;
-    private TipoCuenta tipoCuenta;
+    private String tipoCuenta;
     private double total;
     private String dniCliente; // obligatorio
 }

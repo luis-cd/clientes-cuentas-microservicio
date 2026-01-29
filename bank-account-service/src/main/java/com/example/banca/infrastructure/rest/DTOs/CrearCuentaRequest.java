@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 public class CrearCuentaRequest {
     private String dniCliente;
-    private TipoCuenta tipoCuenta;
+    private String tipoCuenta;
     private double total;
 }

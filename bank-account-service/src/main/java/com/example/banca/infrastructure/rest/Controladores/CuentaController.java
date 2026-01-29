@@ -2,6 +2,7 @@ package com.example.banca.infrastructure.rest.Controladores;
 
 import com.example.banca.application.services.CuentaService;
 import com.example.banca.domain.model.ValueObjects.Dni;
+import com.example.banca.domain.model.ValueObjects.TipoCuenta;
 import com.example.banca.infrastructure.rest.DTOs.CuentaDTO;
 import com.example.banca.infrastructure.rest.DTOs.CrearCuentaRequest;
 import com.example.banca.infrastructure.rest.DTOs.ActualizarCuentaRequest;
@@ -15,19 +16,18 @@ import org.springframework.web.bind.annotation.*;
 public class CuentaController {
 
     private final CuentaService cuentaService;
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CuentaDTO crearCuenta(@RequestBody CrearCuentaRequest request) {
         var cuenta = cuentaService.crearCuenta(
             Dni.of(request.getDniCliente()),
-            request.getTipoCuenta(),
+            TipoCuenta.fromString(request.getTipoCuenta()),
             request.getTotal()
         );
 
         return new CuentaDTO(
             cuenta.getId(),
-            cuenta.getTipoCuenta(),
+            cuenta.getTipoCuenta().name(),
             cuenta.getTotal(),
             cuenta.getDniCliente().getValor()
         );
