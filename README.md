@@ -55,16 +55,22 @@ mvnw.cmd spring-boot:run
 
 El proyecto incluye **tests unitarios y de integración** para cada capa. Se pueden ejecutar de varias formas:
 
-#### 1. Con Maven
-
-Para ejecutar **todos los tests**:
-
 ```bash
 ./mvnw clean test
 ```
 A futuro, se le puede añadir Postman para testear el funcionamiento de la API
 
 ---
+
+## URLs importantes
+
+| Servicio       | URL                                         |
+|----------------|---------------------------------------------|
+| **Swagger UI** | [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) |
+| **OpenAPI JSON** | [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs) |
+| **H2 Console** | [http://localhost:8080/h2-console](http://localhost:8080/h2-console) |
+
+> ⚠ Nota: para la H2 Console, la URL de conexión es `jdbc:h2:mem:testdb` que ya lo pone de forma predeterminada, usuario `user` y contraseña `pass`. Estos datos están expuestos en la configuración del proyecto en el `.properties`. No debería ser así en código real en producción. No he realizado configuración de .env para hacer el proyecto más directo y accesible
 
 ## Consideraciones técnicas
 
